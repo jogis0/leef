@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "users")
 
 public class User {
     @Id
