@@ -1,12 +1,15 @@
-package com.treeleef.leef.services;
+package com.treeleef.leef.services.implementations;
 
-import com.treeleef.leef.dto.CreateOrder;
+import com.treeleef.leef.dto.CreateOrderDto;
 import com.treeleef.leef.models.Order;
 import com.treeleef.leef.models.enumerators.OrderType;
 import com.treeleef.leef.repositories.OrderRepository;
 import com.treeleef.leef.repositories.UserRepository;
+import com.treeleef.leef.services.OrderService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +21,18 @@ public class OrderServiceImpl implements OrderService {
     OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository) {this.orderRepository = orderRepository; this.userRepository = userRepository;}
 
     @Override
-    public Optional<Order> createOrder(CreateOrder createOrder) {
-        var user = userRepository.findById(createOrder.getUserId());
+    public Optional<Order> createOrder(CreateOrderDto createOrderDto) {
+        var user = userRepository.findById(createOrderDto.getUserId());
         if (user.isEmpty())
             return Optional.empty();
 
         var order = Order.builder()
                 .user(user.get())
-                .type(OrderType.valueOf(createOrder.getType()))
-                .ticker(createOrder.getTicker())
-                .amount(createOrder.getAmount())
-                .price(createOrder.getPrice())
+                .type(OrderType.valueOf(createOrderDto.getType()))
+                .ticker(createOrderDto.getTicker())
+                .amount(createOrderDto.getAmount())
+                .price(createOrderDto.getPrice())
+                .creationDate(Timestamp.from(Instant.now()))
                 .build();
 
         return Optional.of(orderRepository.save(order));
