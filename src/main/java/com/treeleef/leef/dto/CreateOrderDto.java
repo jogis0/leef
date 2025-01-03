@@ -15,7 +15,7 @@ public class CreateOrderDto {
 
     private String type;
 
-    private String ticker;
+    private Long stockId;
 
     private BigInteger amount;
 

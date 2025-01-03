@@ -5,13 +5,11 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import com.treeleef.leef.models.enumerators.OrderType;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Data
@@ -32,8 +30,9 @@ public class Order {
     @Column(nullable = false)
     private OrderType type;
 
-    @Column(nullable = false)
-    private String ticker;
+    @ManyToOne
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     @Column(nullable = false)
     private BigInteger amount;
