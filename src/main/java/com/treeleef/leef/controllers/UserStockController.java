@@ -28,18 +28,18 @@ public class UserStockController {
     @GetMapping("/{id}")
     public ResponseEntity<List<UserStock>> getUserStocks(@PathVariable Long id) {
         var result = userStockService.getUserStocks(id);
-        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping
     public ResponseEntity<UserStock> updateUserStock(@RequestBody UpdateUserStockDto updateUserStockDto) {
         var result = userStockService.updateUserStock(updateUserStockDto);
-        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserStock> deleteUserStocks(@PathVariable Long id) {
         var result = userStockService.deleteUserStock(id);
-        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return result.map(userStock -> new ResponseEntity<>(userStock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -4,6 +4,7 @@ import com.treeleef.leef.dto.CreateOrderDto;
 import com.treeleef.leef.models.Order;
 import com.treeleef.leef.models.enumerators.OrderType;
 import com.treeleef.leef.repositories.OrderRepository;
+import com.treeleef.leef.repositories.StockRepository;
 import com.treeleef.leef.repositories.UserRepository;
 import com.treeleef.leef.services.OrderService;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,29 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+
     private final UserRepository userRepository;
-    OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository) {this.orderRepository = orderRepository; this.userRepository = userRepository;}
+
+    private final StockRepository stockRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, StockRepository stockRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.stockRepository = stockRepository;
+    }
 
     @Override
     public Optional<Order> createOrder(CreateOrderDto createOrderDto) {
         var user = userRepository.findById(createOrderDto.getUserId());
-        if (user.isEmpty())
+        var stock = stockRepository.findById(createOrderDto.getStockId());
+
+        if (user.isEmpty() || stock.isEmpty())
             return Optional.empty();
 
         var order = Order.builder()
                 .user(user.get())
                 .type(OrderType.valueOf(createOrderDto.getType()))
-                .ticker(createOrderDto.getTicker())
+                .stock(stock.get())
                 .amount(createOrderDto.getAmount())
                 .price(createOrderDto.getPrice())
                 .creationDate(Timestamp.from(Instant.now()))
