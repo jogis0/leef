@@ -22,7 +22,5 @@ public class Stock {
 
     private String name;
 
-    private String exchange;
-
     private String currency;
 }
